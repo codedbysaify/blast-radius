@@ -69,16 +69,17 @@ impl<'a> singal_percetron_model<'a> {
     }
 
     pub fn print_updated_parameters(&self) {
-        println!(
-            "Updated Parameters:\n 
-        ------- WEIGHTS ------\n
-    {:?}\n
-    -------- BIAS ------- \n
-    {}\n
-    ---------------\n
-        ",
-            self.weights, self.bias
-        );
+        println!("\n┌──────────────────────────────────────────────┐");
+        println!("│            UPDATED PARAMETERS               │");
+        println!("└──────────────────────────────────────────────┘");
+
+        println!("\n📌 WEIGHTS:");
+        println!("{:#?}", self.weights);
+
+        println!("\n📌 BIAS:");
+        println!("{:.6}", self.bias);
+
+        println!("\n──────────────────────────────────────────────");
     }
 
     pub fn predict(&self, input: &Vec<f32>) -> f32 {
