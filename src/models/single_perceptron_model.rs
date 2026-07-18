@@ -9,6 +9,7 @@ pub struct singal_percetron_model<'a> {
     pub activate_function: ActivationFunctions,
     pub epochs: i32,
     pub eta: f32,
+    pub error_type: errorTypes,
 }
 
 impl<'a> singal_percetron_model<'a> {
@@ -18,6 +19,7 @@ impl<'a> singal_percetron_model<'a> {
         activate_function: ActivationFunctions,
         epochs: i32,
         eta: f32,
+        error_type: errorTypes,
     ) -> Self {
         let weights: Vec<f32> = vec![0.0; inputSize];
         let bias = 1.0;
@@ -29,6 +31,7 @@ impl<'a> singal_percetron_model<'a> {
             activate_function,
             epochs,
             eta,
+            error_type,
         }
     }
 
