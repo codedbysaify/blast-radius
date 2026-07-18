@@ -1,11 +1,4 @@
-pub fn perceptron(inputs: &[f32], weights: &[f32], bias: f32) -> f32 {
-    println!(
-        "Total inputs recieved {}: {},{}",
-        inputs.len(),
-        inputs[0],
-        inputs[1]
-    );
-    println!("Total Weights recieved {}", weights.len());
+pub fn compute_net(inputs: &[f32], weights: &[f32], bias: f32) -> f32 {
     if inputs.len() != weights.len() {
         panic!("Weights are not equal to total inputs");
     }
