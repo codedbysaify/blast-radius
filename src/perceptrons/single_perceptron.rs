@@ -1,4 +1,4 @@
-pub fn perceptron(inputs: &[f32], weights: &[f32], bias: f32) -> f32 {
+pub fn compute_net(inputs: &[f32], weights: &[f32], bias: f32) -> f32 {
     if inputs.len() != weights.len() {
         panic!(
             "Weights are not equal to total inputs Input size: {} weights size: {}
