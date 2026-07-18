@@ -1,10 +1,9 @@
-use crate::activation_functions::{self, ActivationFunctions, step_activate};
-use crate::error_estimates::{errorTypes, simple_error};
-use crate::perceptrons::{perceptron, single_perceptron};
+use crate::activation_functions::{self, ActivationFunctions};
+use crate::perceptrons::compute_net;
 #[derive(Debug)]
 pub struct singal_percetron_model<'a> {
     pub inputs: &'a Vec<Vec<f32>>,
-    pub weights: &'a mut Vec<f32>,
+    pub weights: Vec<f32>,
     pub bias: f32,
     pub inputSize: usize,
     pub activate_function: ActivationFunctions,
@@ -16,14 +15,14 @@ pub struct singal_percetron_model<'a> {
 impl<'a> singal_percetron_model<'a> {
     pub fn new(
         inputs: &'a Vec<Vec<f32>>,
-        weights: &'a mut Vec<f32>,
-        bias: f32,
         inputSize: usize,
         activate_function: ActivationFunctions,
         epochs: i32,
         eta: f32,
         error_type: errorTypes,
     ) -> Self {
+        let weights: Vec<f32> = vec![0.0; inputSize];
+        let bias = 1.0;
         Self {
             inputs,
             weights,
@@ -37,57 +36,29 @@ impl<'a> singal_percetron_model<'a> {
     }
 
     pub fn learn(&mut self) {
-        for i in 1..=self.epochs {
-            println!(
-                "
-            ----------------------------\n
-            EPOCh : {}
-            ----------------------------\n
-            ",
-                i
-            );
+        for epoch in (0..self.epochs) {
+            println!("Epoch: {}", epoch);
+            for instance in self.inputs {
+                let input = &instance[0..self.inputSize];
+                let result = instance[self.inputSize];
+                let output = self.predict(&input);
 
-            for input in self.inputs {
-                let inputVector = &input[0..self.inputSize];
-                let net: f32 = perceptron(&inputVector, self.weights, self.bias);
-                let output = match self.activate_function {
-                    ActivationFunctions::Step => activation_functions::step_activate(net),
-
-                    _ => activation_functions::step_activate(net),
-                };
-                let error: f32 = match self.error_type {
-                    errorTypes::Simple => simple_error(input[self.inputSize], output),
-                    _ => simple_error(input[self.inputSize], output),
-                };
-
-                for i in 0..self.weights.len() {
-                    self.weights[i] = self.weights[i] + self.eta * error * inputVector[i];
+                //updating weights and bias
+                let error: f32 = result - output;
+                for i in (0..self.inputSize) {
+                    self.weights[i] += error * self.eta * input[i];
                 }
-                self.bias = self.bias + self.eta * error;
+
+                self.bias += error * self.eta;
             }
         }
     }
-
-    pub fn print_updated_parameters(&self) {
-        println!("\n┌──────────────────────────────────────────────┐");
-        println!("│            UPDATED PARAMETERS               │");
-        println!("└──────────────────────────────────────────────┘");
-
-        println!("\n📌 WEIGHTS:");
-        println!("{:#?}", self.weights);
-
-        println!("\n📌 BIAS:");
-        println!("{:.6}", self.bias);
-
-        println!("\n──────────────────────────────────────────────");
+    pub fn predict(&self, inputs: &[f32]) -> f32 {
+        let computed_net: f32 = compute_net(inputs, &self.weights, self.bias);
+        activation_functions::step_activate(computed_net)
     }
 
-    pub fn predict(&self, input: &Vec<f32>) -> f32 {
-        let net = perceptron(input, self.weights, self.bias);
-        let output = match self.activate_function {
-            ActivationFunctions::Step => step_activate(net),
-            _ => step_activate(net),
-        };
-        output
+    pub fn get_model_info(&self) {
+        println!("{:?}", self);
     }
 }
