@@ -59,7 +59,7 @@ impl<'a> singal_percetron_model<'a> {
         activation_functions::step_activate(computed_net)
     }
 
-    pub fn get_model_info(&self) {
+    pub fn get_info(&self) {
         println!("{:?}", self);
     }
 }
