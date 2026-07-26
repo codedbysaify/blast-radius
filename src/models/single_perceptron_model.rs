@@ -1,8 +1,8 @@
 use crate::activation_functions::{self, ActivationFunctions};
 use crate::error_estimates::{errorTypes, simple_error};
 use crate::perceptrons::compute_net;
-#[derive(Debug)]
-pub struct singal_percetron_model<'a> {
+#[derive(Debug, Clone)]
+pub struct perceptron_model<'a> {
     pub inputs: &'a Vec<Vec<f32>>,
     pub weights: Vec<f32>,
     pub bias: f32,
@@ -12,7 +12,7 @@ pub struct singal_percetron_model<'a> {
     pub errorType: errorTypes,
 }
 
-impl<'a> singal_percetron_model<'a> {
+impl<'a> perceptron_model<'a> {
     pub fn new(
         inputs: &'a Vec<Vec<f32>>,
         inputSize: usize,
@@ -60,6 +60,6 @@ impl<'a> singal_percetron_model<'a> {
     }
 
     pub fn get_info(&self) {
-        println!("{:?}", self);
+        println!("{:?}", self.weights);
     }
 }

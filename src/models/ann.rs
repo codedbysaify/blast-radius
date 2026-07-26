@@ -1,4 +1,4 @@
-use super::single_perceptron_model::singal_percetron_model;
+use super::single_perceptron_model::perceptron_model;
 use crate::activation_functions::ActivationFunctions;
 use crate::error_estimates::errorTypes;
 
@@ -6,7 +6,7 @@ use crate::error_estimates::errorTypes;
 pub struct layer<'a> {
     pub position: i32,          //position of the layer in the NN
     pub number_of_neurons: i32, //Total number of neurons
-    pub neuronsVector: &'a Vec<singal_percetron_model<'a>>,
+    pub neuronsVector: &'a Vec<perceptron_model<'a>>,
     pub layerOutput: Vec<f32>,
     pub ActivationFunction: ActivationFunctions,
 }
