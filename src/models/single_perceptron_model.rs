@@ -34,24 +34,21 @@ impl<'a> perceptron_model<'a> {
     }
 
     pub fn learn(&mut self, epochs: i32) {
-        for epoch in (0..epochs) {
-            println!("Epoch: {}", epoch);
-            for instance in self.inputs {
-                let input = &instance[0..self.inputSize];
-                let actual_output = instance[self.inputSize];
-                let predicted_output = self.predict(&input);
+        for instance in self.inputs {
+            let input = &instance[0..self.inputSize];
+            let actual_output = instance[self.inputSize];
+            let predicted_output = self.predict(&input);
 
-                //updating weights and bias
-                let error: f32 = match self.errorType {
-                    errorTypes::Simple => simple_error(actual_output, predicted_output),
-                    _ => actual_output - predicted_output,
-                };
-                for i in (0..self.inputSize) {
-                    self.weights[i] += error * self.eta * input[i];
-                }
-
-                self.bias += error * self.eta;
+            //updating weights and bias
+            let error: f32 = match self.errorType {
+                errorTypes::Simple => simple_error(actual_output, predicted_output),
+                _ => actual_output - predicted_output,
+            };
+            for i in (0..self.inputSize) {
+                self.weights[i] += error * self.eta * input[i];
             }
+
+            self.bias += error * self.eta;
         }
     }
     pub fn predict(&self, inputs: &[f32]) -> f32 {
