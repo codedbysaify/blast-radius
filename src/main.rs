@@ -15,20 +15,17 @@ mod perceptrons;
 
 fn main() {
     let inputs: Vec<Vec<f32>> = vec![
-        vec![0.0, 0.0, 0.0],
-        vec![0.0, 1.0, 0.0],
-        vec![1.0, 1.0, 1.0],
-        vec![1.0, 0.0, 0.0],
+        vec![0.0, 0.0],
+        vec![0.0, 1.0],
+        vec![1.0, 1.0],
+        vec![1.0, 0.0],
     ];
+    let outputs: Vec<f32> = vec![0.0,0.0,1.0,0.0];
 
-    let mut layer1: models::layers::linearLayer<'_> = models::layers::linearLayer::new(
-        "linear layer 1".to_string(),
-        0,
-        &inputs,
-        true,
-        Some(ActivationFunctions::Step),
-        3,
-        Some(errorTypes::Simple),
-    );
-    layer1.compute_weighted_sum();
+    let mut layer1: models::layers::linearLayer =
+        models::layers::linearLayer::new("linear layer 1".to_string(), 0, 2, 3);
+    for input in &inputs {
+        layer1.compute_linear_sum(input);
+        layer1.print_output();
+    }
 }
