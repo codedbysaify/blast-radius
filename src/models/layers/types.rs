@@ -2,4 +2,5 @@
 pub enum layerType {
     INPUT,
     LINEAR,
+    ACTIVATION,
 }

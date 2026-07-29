@@ -20,7 +20,7 @@ fn main() {
         vec![1.0, 1.0],
         vec![1.0, 0.0],
     ];
-    let outputs: Vec<f32> = vec![0.0,0.0,1.0,0.0];
+    let outputs: Vec<f32> = vec![0.0, 0.0, 1.0, 0.0];
 
     let mut layer1: models::layers::linearLayer =
         models::layers::linearLayer::new("linear layer 1".to_string(), 0, 2, 3);
