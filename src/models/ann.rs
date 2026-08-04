@@ -1,44 +1,47 @@
+use std::vec;
+
+use super::layers::types::layer_objects;
 use super::single_perceptron_model::perceptron_model;
 use crate::activation_functions::ActivationFunctions;
 use crate::error_estimates::errorTypes;
+use crate::models::layers::{Activation_layer, linear};
 
 #[derive(Debug)]
-pub struct layer<'a> {
-    pub position: i32,          //position of the layer in the NN
-    pub number_of_neurons: i32, //Total number of neurons
-    pub neuronsVector: &'a Vec<perceptron_model<'a>>,
-    pub layerOutput: Vec<f32>,
-    pub ActivationFunction: ActivationFunctions,
-}
-#[derive(Debug)]
-pub struct Ann<'a> {
-    pub totalLayers: i32,
-    pub errorEstimate: errorTypes,
-    pub compiledNetwork: &'a Vec<layer<'a>>,
-    pub networkOutput: Vec<f32>,
+pub struct Ann {
+    pub totalLayers: usize,
+    pub network: Vec<layer_objects>,
+    pub epochs: usize,
+    pub eta: f32,
 }
 
-impl<'a> Ann<'a> {
-    pub fn new(
-        totalLayers: i32,
-        errorEstimate: errorTypes,
-        compiledNetwork: &'a Vec<layer<'a>>,
-        networkOutput: Vec<f32>,
-    ) -> Self {
+impl Ann {
+    pub fn new() -> Self {
         Self {
-            totalLayers,
-            errorEstimate,
-            compiledNetwork,
-            networkOutput,
+            totalLayers: 0,
+            network: Vec::new(),
+            epochs: 0,
+            eta: 0.0,
         }
     }
 
-    pub fn getNetworkInfo(&self) {
-        for layer in self.compiledNetwork {
-            for nueron in layer.neuronsVector {
-                println!("{:?}", nueron.get_info());
+    pub fn addLayer(&mut self, layer: layer_objects) {
+        self.network.push(layer);
+        self.totalLayers += 1;
+    }
+
+    pub fn forwardPass(&mut self, inputVector: Vec<f32>) {
+        let mut seedLayer: &Vec<f32> = &inputVector;
+        for layer in &mut self.network {
+            match layer {
+                layer_objects::LINEAR(linearLayer) => {
+                    seedLayer = linearLayer.get_output_vector(&seedLayer);
+                }
+                layer_objects::ACTIVATION(activationLayer) => {
+                    seedLayer = activationLayer.get_output_vector(seedLayer.clone());
+                }
             }
-            println!("----");
         }
+        println!("Final Output: ");
+        println!("{:?}", seedLayer);
     }
 }

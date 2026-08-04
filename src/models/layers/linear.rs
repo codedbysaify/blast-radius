@@ -4,7 +4,9 @@ use crate::{
     activation_functions::ActivationFunctions, models::single_perceptron_model,
     perceptrons::single_perceptron,
 };
+use std::io::SeekFrom;
 use std::thread;
+#[derive(Debug)]
 pub struct linearLayer {
     layerName: String,
     layerIndex: usize,
@@ -50,5 +52,9 @@ impl linearLayer {
     }
     pub fn print_output(&self) {
         println!("{:?}", self.outputLayer);
+    }
+    pub fn get_output_vector(&mut self, inputVector: &Vec<f32>) -> &Vec<f32> {
+        self.compute_linear_sum(inputVector);
+        &self.outputLayer
     }
 }
